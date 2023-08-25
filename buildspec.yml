@@ -1,0 +1,37 @@
+version: 0.2
+
+phases: 
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing Node.js runtime"
+  
+
+  pre_build:
+    commands:
+      - echo "Installing YARN using NPM"
+      - npm install --global yarn
+      - echo "Installing dependencies using YARN"
+      - yarn install
+
+  build:
+    commands:
+      # Building the react app into a static file.
+      - echo "Build started on `date`"
+      - yarn build
+
+      # Copy the static file to AWS S3
+      - aws s3 sync build/ s3://muku-react-portfolio
+      
+      # Invalidating cache ensure that users receive the most up-to-date and accurate content from our web application
+      - aws cloudfront create-invalidation --distribution-id E3M5TAQQXYP1 --paths "/*"
+
+
+artifacts:
+  files:
+    - '**/*'
+
+  cache:
+    paths:
+      - '/root/.npm/**/*'
