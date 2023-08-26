@@ -32,3 +32,5 @@ This project provides a basic setup for deploying a React app using AWS services
 ## Feedback and Contributions
 
 Feedback and contributions are welcome! If you encounter any issues or have suggestions for improvement, feel free to open an issue or submit a pull request.
+
+A more detailed step can be found here: [Mukhtar's world of DevOps](https://mukhtarabassgiwa.hashnode.dev/revolutionizing-deployment-unleashing-the-power-of-aws-codepipeline-to-deploy-your-dynamic-react-app-served-seamlessly-through-cloudfront)
