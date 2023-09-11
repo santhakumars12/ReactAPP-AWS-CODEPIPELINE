@@ -37,15 +37,15 @@ phases:
       - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
       - cat result.json
       - if [ $(jq -r '.projectStatus.status' result.json) = ERROR ]; then
-        echo "SonarQube analysis failed. Halting the pipeline.";
+          echo "SonarQube analysis failed. Halting the pipeline.";
         exit 1;
         else
-        echo "SonarQube analysis passed. Proceeding with deployment..."
-        fi
+          echo "SonarQube analysis passed. Proceeding with deployment..."
       # Copy the static file to AWS S3
-      - aws s3 sync build/ s3://muku-react-portfolio
+          aws s3 sync build/ s3://muku-react-portfolio
       # Invalidating cache ensure that users receive the most up-to-date and accurate content from our web application
-      - aws cloudfront create-invalidation --distribution-id E3M5TAQQXYP1 --paths "/*"
+          aws cloudfront create-invalidation --distribution-id E3M5TAQQXYP1 --paths "/*"
+        fi
       
 
 artifacts:
