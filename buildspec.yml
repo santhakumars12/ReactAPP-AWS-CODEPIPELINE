@@ -23,9 +23,6 @@ phases:
       - npm install --global yarn
       # Installing dependencies using YARN
       - yarn install
-
-  code_review:
-     commands:
       # SonarQube analysis scanning as the basic test
       - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=$HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization
       - sleep 10
