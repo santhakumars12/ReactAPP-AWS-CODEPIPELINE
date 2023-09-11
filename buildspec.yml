@@ -36,7 +36,7 @@ phases:
       # Checking the result of the scan to either fail or pass the pipeline
       - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
       - cat result.json
-      - if [ $(jq -r '.projectStatus.status' result.json) = ERROR ] ; then
+      - if [ $(jq -r '.projectStatus.status' result.json) = ERROR ]; then
         echo "SonarQube analysis failed. Halting the pipeline.";
         exit 1;
         else

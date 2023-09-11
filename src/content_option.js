@@ -1,4 +1,4 @@
-const logotext = "Mukhtar ABASS-GIWA";
+const logotext = "Mukhtar ABASS-GIWA's ASSESSMENT FOR DOC***** APPLICATION";
 const meta = {
     title: "Mukhtar-Portfolio",
     description: "I'm Mukhtar, a Cloud/DevOps Engineer.",
