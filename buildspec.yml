@@ -1,19 +1,34 @@
 version: 0.2
-
-phases: 
+env:
+  secrets-manager:
+    LOGIN: prod/sonar:sonartoken
+    HOST: prod/sonar:HOST
+    Organization: prod/sonar:Organization
+    Project: prod/sonar:Project
+phases:
   install:
     runtime-versions:
       nodejs: 18
-    commands:
-      - echo "Installing Node.js runtime"
-  
 
   pre_build:
     commands:
-      - echo "Installing YARN using NPM"
+      - apt-get update 
+      - apt-get install -y jq
+      # Installing and setting up sonarqube
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+      - unzip ./sonar-scanner-cli-4.7.0.2747-linux.zip
+      - ls $pwd
+      - export PATH=$PATH:./sonar-scanner-4.7.0.2747-linux/bin/
+      # Installing YARN using NPM
       - npm install --global yarn
-      - echo "Installing dependencies using YARN"
+      # Installing dependencies using YARN
       - yarn install
+
+  code_review:
+     commands:
+      # SonarQube analysis scanning as the basic test
+      - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=$HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization
+      - sleep 10
 
   build:
     commands:
@@ -21,17 +36,25 @@ phases:
       - echo "Build started on `date`"
       - yarn build
 
+      # Checking the result of the scan to either fail or pass the pipeline
+      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
+      - cat result.json
+      - if [ $(jq -r '.projectStatus.status' result.json) = ERROR ] ; then
+        echo "SonarQube analysis failed. Halting the pipeline.";
+        exit 1;
+      else
+      # Deployment only if SonarQube analysis passes
+        echo "SonarQube analysis passed. Proceeding with deployment..."
       # Copy the static file to AWS S3
       - aws s3 sync build/ s3://muku-react-portfolio
-      
       # Invalidating cache ensure that users receive the most up-to-date and accurate content from our web application
       - aws cloudfront create-invalidation --distribution-id E3M5TAQQXYP1 --paths "/*"
-
+      fi
 
 artifacts:
   files:
     - '**/*'
 
-  cache:
-    paths:
-      - '/root/.npm/**/*'
+cache:
+  paths:
+    - '/root/.npm/**/*'
