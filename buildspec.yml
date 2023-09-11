@@ -14,7 +14,7 @@ phases:
     commands:
       - apt-get update 
       - apt-get install -y jq
-      # Installing and setting up sonarqube
+      # Installing and setting up sonarqube for code quality analysis
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
       - unzip ./sonar-scanner-cli-4.7.0.2747-linux.zip
       - ls $pwd
