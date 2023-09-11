@@ -40,13 +40,11 @@ phases:
           echo "SonarQube analysis failed. Halting the pipeline.";
         exit 1;
         else
-          echo "SonarQube analysis passed. Proceeding with deployment..."
+          echo "SonarQube analysis passed. Proceeding with deployment..." ;fi
       # Copy the static file to AWS S3
       - aws s3 sync build/ s3://muku-react-portfolio
       # Invalidating cache ensure that users receive the most up-to-date and accurate content from our web application
       - aws cloudfront create-invalidation --distribution-id E3M5TAQQXYP1 --paths "/*"
-        fi
-      
 
 artifacts:
   files:
