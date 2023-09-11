@@ -42,7 +42,7 @@ phases:
       - if [ $(jq -r '.projectStatus.status' result.json) = ERROR ] ; then
         echo "SonarQube analysis failed. Halting the pipeline.";
         exit 1;
-      else
+        else
       # Deployment only if SonarQube analysis passes
         echo "SonarQube analysis passed. Proceeding with deployment..."
       # Copy the static file to AWS S3
