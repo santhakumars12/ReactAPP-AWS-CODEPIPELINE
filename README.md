@@ -1,6 +1,7 @@
 # Deploying a React App Using AWS CodePipeline
 
 Welcome to the "Deploying a React App Using AWS CodePipeline" project! This guide provides step-by-step instructions on how to deploy your React app as a static file on Amazon S3 and distribute it through CloudFront using AWS CodePipeline.
+Click here for the detailed blog post [Mukhtar's world of Devops](https://mukhtarabassgiwa.hashnode.dev/modernizing-devops-elevating-deployment-with-aws-codepipeline-sonarqube-secrets-manager-and-eventbridge-notifications) 
 
 For a detailed look at the previous edition of this project (published on 26 August 2023), click [here](https://mukhtarabassgiwa.hashnode.dev/revolutionizing-deployment-unleashing-the-power-of-aws-codepipeline-to-deploy-your-dynamic-react-app-served-seamlessly-through-cloudfront)
 
