@@ -17,9 +17,9 @@ phases:
       - echo "Build started on `date`"
       - yarn build
       # Copy the static file to AWS S3
-      - aws s3 sync build/ s3://react-user-mgmt-project
+      - aws s3 sync build/ s3://react-production-bucket-2023
       # Invalidating cache ensure that users receive the most up-to-date and accurate content from our web application
-      - aws cloudfront create-invalidation --distribution-id E1X9E1GWAVMHJU --paths "/*"
+      - aws cloudfront create-invalidation --distribution-id E1HRLEQU3LTNFO --paths "/*"
 
 artifacts:
   files:
