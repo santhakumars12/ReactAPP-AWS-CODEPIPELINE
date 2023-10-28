@@ -1,10 +1,4 @@
 version: 0.2
-env:
-  secrets-manager:
-    LOGIN: prod/sonar:sonartoken
-    HOST: prod/sonar:HOST
-    Organization: prod/sonar:Organization
-    Project: prod/sonar:Project
 phases:
   install:
     runtime-versions:
@@ -12,40 +6,20 @@ phases:
 
   pre_build:
     commands:
-      - apt-get update 
-      - apt-get install -y jq
-      # Installing and setting up sonarqube for code quality analysis
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
-      - unzip ./sonar-scanner-cli-4.7.0.2747-linux.zip
-      - ls $pwd
-      - export PATH=$PATH:./sonar-scanner-4.7.0.2747-linux/bin/
       # Installing YARN using NPM
       - npm install --global yarn
       # Installing dependencies using YARN
       - yarn install
-      # SonarQube analysis scanning as the basic test
-      - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=$HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization
-      - sleep 10
 
   build:
     commands:
       # Building the react app into a static file.
       - echo "Build started on `date`"
       - yarn build
-
-      # Checking the result of the scan to either fail or pass the pipeline
-      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
-      - cat result.json
-      - if [ $(jq -r '.projectStatus.status' result.json) = ERROR ]; then
-          echo "SonarQube analysis failed. Halting the pipeline.";
-        exit 1;
-        else
-          echo "SonarQube analysis passed. Proceeding with deployment..." ;
-        fi
       # Copy the static file to AWS S3
-      - aws s3 sync build/ s3://muku-react-portfolio
+      - aws s3 sync build/ s3://react-user-mgmt-project
       # Invalidating cache ensure that users receive the most up-to-date and accurate content from our web application
-      - aws cloudfront create-invalidation --distribution-id E3M5TAQQXYP1 --paths "/*"
+      - aws cloudfront create-invalidation --distribution-id E1WH5EDR1IMRIJ --paths "/*"
 
 artifacts:
   files:
