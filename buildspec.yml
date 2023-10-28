@@ -19,7 +19,7 @@ phases:
       # Copy the static file to AWS S3
       - aws s3 sync build/ s3://react-user-mgmt-project
       # Invalidating cache ensure that users receive the most up-to-date and accurate content from our web application
-      - aws cloudfront create-invalidation --distribution-id E1WH5EDR1IMRIJ --paths "/*"
+      - aws cloudfront create-invalidation --distribution-id E1X9E1GWAVMHJU --paths "/*"
 
 artifacts:
   files:
